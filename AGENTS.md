@@ -8,3 +8,10 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+## Rules
+
+- All backend API calls go through `src/lib/api.ts`, and every request URL is
+  built from `import.meta.env.VITE_API_BASE_URL` — never hardcode the backend
+  URL anywhere else. Why: the app deploys behind different backend URLs
+  (Docker/Azure), and no backend secrets may reach the frontend.
