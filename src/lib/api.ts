@@ -57,10 +57,10 @@ function asRecord(value: unknown): Record<string, unknown> {
 /** Normalizes whatever item shape the backend returns into a Note. */
 function toNote(value: unknown): Note {
   const record = asRecord(value);
-  const description = record.description ?? record.desc ?? record.body ?? "";
+  const description = record["description"] ?? record["desc"] ?? record["body"] ?? "";
   return {
-    id: String(record.id ?? record._id ?? record.itemId ?? ""),
-    name: String(record.name ?? record.title ?? "Untitled note"),
+    id: String(record["id"] ?? record["_id"] ?? record["itemId"] ?? ""),
+    name: String(record["name"] ?? record["title"] ?? "Untitled note"),
     description: typeof description === "string" ? description : JSON.stringify(description),
   };
 }
@@ -81,10 +81,10 @@ export async function listItems(): Promise<Note[]> {
   const record = asRecord(data);
   const rows = Array.isArray(data)
     ? data
-    : Array.isArray(record.items)
-      ? record.items
-      : Array.isArray(record.data)
-        ? record.data
+    : Array.isArray(record["items"])
+      ? record["items"]
+      : Array.isArray(record["data"])
+        ? record["data"]
         : [];
   return rows.map(toNote);
 }
@@ -111,7 +111,8 @@ export async function requestUploadUrl(fileName: string, contentType: string): P
     body: JSON.stringify({ fileName, contentType }),
   });
   const record = asRecord(data);
-  const url = record.uploadUrl ?? record.upload_url ?? record.url ?? record.signedUrl ?? record.signed_url;
+  const url =
+    record["uploadUrl"] ?? record["upload_url"] ?? record["url"] ?? record["signedUrl"] ?? record["signed_url"];
   if (typeof url !== "string" || !url) {
     throw new Error("The backend did not return an upload URL.");
   }

@@ -25,7 +25,7 @@ describe("api service", () => {
 
     const note = await createItem({ name: "Groceries", description: "Milk and eggs" });
 
-    const [url, init] = fetchMock.mock.calls[0];
+    const [url, init] = fetchMock.mock.calls[0]!;
     expect(url).toBe("https://api.example.com/api/items");
     expect(init.method).toBe("POST");
     expect(init.body).toBe(JSON.stringify({ name: "Groceries", description: "Milk and eggs" }));
